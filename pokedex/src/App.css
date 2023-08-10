@@ -1,8 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #FB1B1B;
+  font-family: 'Press Start 2P', cursive;
+}
+
 .Pokemon-App {
   text-align: center;
 }
 
-/* App.css */
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -29,18 +41,6 @@
   height: 150px;
 }
 
-.details,
-.types,
-.abilities,
-.stats {
-  margin-top: 20px;
-  padding-bottom: 20px;
-  border: 1px solid black;
-  border-radius: 10px;
-  margin-left: 200px;
-  margin-right: 200px;
-}
-
 .stats p {
   margin-bottom: 5px;
 }
@@ -50,3 +50,33 @@
   margin-left: 170px;
   margin-right: 140px;
 } */
+
+/* App.css */
+/* ... Your existing CSS rules ... */
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.grid-item {
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border: 5px solid #0075BE;
+  background-color: #FFCC00;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.pokemon-logo {
+  height: 150px;
+}
+
+h3 {
+  color: #0A285F;
+}
+
+p {
+  color: #0075BE;
+}

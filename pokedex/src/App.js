@@ -3,12 +3,35 @@ import "./App.css";
 import axios from "axios";
 import { motion } from "framer-motion";
 
+
+const containerVariants = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
+
 function App() {
   const [pokemonName, setPokemonName] = useState("");
   const [pokemonData, setPokemonData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchPokemon = async () => {
+
+const fetchPokemon = async () => {
+  if (pokemonName.trim() !== "") {
     try {
       setIsLoading(true);
       const response = await axios.get(
@@ -21,7 +44,8 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
+};
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -33,11 +57,16 @@ function App() {
 
   return (
     <div className="Pokemon-App container">
-      <h1 className="text-center mt-5">Pokémon Pokédex</h1>
+      <img 
+        src="https://i.imgur.com/1Etib7y.png"
+        alt="Pokemon Logo"
+        className="pokemon-logo"
+      />
+      {/* <h1 className="text-center mt-5">Pokémon Pokédex</h1> */}
       <div className="search-container">
         <input
           type="text"
-          placeholder="Enter Pokémon name or ID"
+          placeholder="Enter Pokémon ID"
           value={pokemonName}
           onChange={(e) => setPokemonName(e.target.value)}
         />
@@ -47,14 +76,18 @@ function App() {
       </div>
 
       {pokemonData && (
-        <motion.div
-          key={pokemonData.id} 
-          className="total-data mt-5"
-        >
+        <motion.div key={pokemonData.id} className="total-data mt-5">
           {/* Image Animation */}
-                   <h2 className="name">{capitalizeFirstLetter(pokemonData.name)}</h2>
-            
-            <motion.img
+          <motion.h2
+            className="name"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            {capitalizeFirstLetter(pokemonData.name)}
+          </motion.h2>
+
+          <motion.img
             src={pokemonData.sprites.front_default}
             alt={pokemonData.name}
             className="pokemon-image"
@@ -63,50 +96,76 @@ function App() {
             transition={{ duration: 1 }}
           />
 
-
           {/* Delayed Data */}
           {!isLoading && (
             <motion.div
               className="details-container"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
-              <div className="types">
-                <h3>Types:</h3>
-                <p>
-                  {pokemonData.types
-                    .map((type) => capitalizeFirstLetter(type.type.name))
-                    .join(", ")}
-                </p>
-              </div>
+              <div className="grid-container">
+                <motion.div
+                  className="grid-item details"
+                  variants={itemVariants}
+                >
+                  <h3>Details:</h3>
+                  <p>Height: {pokemonData.height / 10} meters</p>
+                  <p>Weight: {pokemonData.weight / 10} kg</p>
+                </motion.div>
 
-              <div className="abilities">
-                <h3>Abilities:</h3>
-                <p>
-                  {pokemonData.abilities
-                    .map((ability) =>
-                      capitalizeFirstLetter(ability.ability.name)
-                    )
-                    .join(", ")}
-                </p>
-              </div>
+                <motion.div className="grid-item types" variants={itemVariants}>
+                  <h3>Types:</h3>
+                  {pokemonData.types.map((type) => (
+                    <p key={type.type.name}>
+                      {capitalizeFirstLetter(type.type.name)}
+                    </p>
+                  ))}
+                </motion.div>
 
-              <div className="stats">
-                <h3>Stats:</h3>
-                <div className="bulletpoints">
-                {pokemonData.stats.map((stat) => (
-                  <p key={stat.stat.name}>
-                    {capitalizeFirstLetter(stat.stat.name)}: {stat.base_stat}
-                  </p>
-                ))}
-                </div>
-              </div>
+                <motion.div
+                  className="grid-item abilities"
+                  variants={itemVariants}
+                >
+                  <h3>Abilities:</h3>
+                  {pokemonData.abilities.map((ability) => (
+                    <p key={ability.ability.name}>
+                      {capitalizeFirstLetter(ability.ability.name)}
+                    </p>
+                  ))}
+                </motion.div>
 
-              <div className="details">
-                <h3>Details:</h3>
-                <p>Height: {pokemonData.height / 10} meters</p>
-                <p>Weight: {pokemonData.weight / 10} kg</p>
+                <motion.div className="grid-item stats" variants={itemVariants}>
+                  <h3>Stats:</h3>
+                  <div className="bulletpoints">
+                    <div className="stats-columns">
+                      <div className="stats-column">
+                        {pokemonData.stats.slice(0, 3).map((stat) => (
+                          <p key={stat.stat.name}>
+                            {capitalizeFirstLetter(stat.stat.name)}:{" "}
+                            {stat.base_stat}
+                          </p>
+                        ))}
+                      </div>
+                      <div className="stats-column">
+                        {pokemonData.stats.slice(3, 6).map((stat) => (
+                          <p key={stat.stat.name}>
+                            {capitalizeFirstLetter(stat.stat.name)}:{" "}
+                            {stat.base_stat}
+                          </p>
+                        ))}
+                      </div>
+                      <div className="stats-column">
+                        {pokemonData.stats.slice(6).map((stat) => (
+                          <p key={stat.stat.name}>
+                            {capitalizeFirstLetter(stat.stat.name)}:{" "}
+                            {stat.base_stat}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           )}
