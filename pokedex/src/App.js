@@ -29,23 +29,28 @@ function App() {
   const [pokemonData, setPokemonData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
-const fetchPokemon = async () => {
-  if (pokemonName.trim() !== "") {
-    try {
-      setIsLoading(true);
-      const response = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
-      );
-      setPokemonData(response.data);
-    } catch (error) {
-      console.error("Error fetching Pokémon:", error);
-      setPokemonData(null);
-    } finally {
-      setIsLoading(false);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      fetchPokemon();
     }
-  }
-};
+  };
+
+  const fetchPokemon = async () => {
+    if (pokemonName.trim() !== "") {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
+        );
+        setPokemonData(response.data);
+      } catch (error) {
+        console.error("Error fetching Pokémon:", error);
+        setPokemonData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -57,7 +62,7 @@ const fetchPokemon = async () => {
 
   return (
     <div className="Pokemon-App container">
-      <img 
+      <img
         src="https://i.imgur.com/1Etib7y.png"
         alt="Pokemon Logo"
         className="pokemon-logo"
@@ -69,6 +74,7 @@ const fetchPokemon = async () => {
           placeholder="Enter Pokémon ID"
           value={pokemonName}
           onChange={(e) => setPokemonName(e.target.value)}
+          onKeyDown={handleKeyDown} 
         />
         <button className="btn btn-primary" onClick={fetchPokemon}>
           Search
