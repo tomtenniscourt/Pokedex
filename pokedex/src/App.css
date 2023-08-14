@@ -25,7 +25,15 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-}
+  }
+
+  .btn-primary {
+  margin-left: 10px;
+  height: 35px;
+  font-family: 'Press Start 2P', cursive;
+  }
+
+
 
 .Pokemon-App {
   text-align: center;
@@ -44,15 +52,6 @@ body {
 .stats p {
   margin-bottom: 5px;
 }
-/* .bulletpoints {
-  text-align: left;
-  border: 1px solid red;
-  margin-left: 170px;
-  margin-right: 140px;
-} */
-
-/* App.css */
-/* ... Your existing CSS rules ... */
 
 .grid-container {
   display: grid;

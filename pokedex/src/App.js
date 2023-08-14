@@ -3,7 +3,6 @@ import "./App.css";
 import axios from "axios";
 import { motion } from "framer-motion";
 
-
 const containerVariants = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -74,7 +73,7 @@ function App() {
           placeholder="Enter Pokémon ID"
           value={pokemonName}
           onChange={(e) => setPokemonName(e.target.value)}
-          onKeyDown={handleKeyDown} 
+          onKeyDown={handleKeyDown}
         />
         <button className="btn btn-primary" onClick={fetchPokemon}>
           Search
